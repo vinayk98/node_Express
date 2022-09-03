@@ -31,5 +31,5 @@ const StudentSchema = new mongoose.Schema({
 })
 
 //so our collection is now created
-const Student = mongoose.model(`NODEEXPRESS_student`, StudentSchema)
+const Student = mongoose.model(`vinay_nodeExpress`, StudentSchema)
 module.exports= Student;

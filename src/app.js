@@ -1,9 +1,10 @@
 const express = require('express')
 const app = express()
+const cors = require('cors');
 const bcrypt = require('bcrypt');
 const connectDB = require('./models/conn')
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3002
 connectDB();
 
 var salt = bcrypt.genSaltSync(10);
@@ -14,7 +15,7 @@ const Student = require('./models/studentmodel')
 
 app.use(express.json());
 // app.use(express.urlencoded());
-
+// app.use(cors())
 app.get('/', async (req, res) => {
     try {
         console.log("get the  data");
@@ -23,8 +24,18 @@ app.get('/', async (req, res) => {
         console.log(err);
         res.status.send(err)
     }
-
 })
+
+app.get('/users', async (req, res) => {
+    try {
+        const allUsers = await Student.find();
+        res.json({ users: allUsers })
+    } catch (error) {
+        console.log(error);
+        res.status(400).send()
+    }
+})
+
 
 app.post('/register', async (req, res) => {
     const userPassword = req.body.password
@@ -61,13 +72,13 @@ app.delete('/deleteUser/:id', async (req, res) => {
 app.patch('/edituser/:id', async (req, res) => {
 
     try {
-        let userID =req.params.id;
-        console.log("this is the id " , userID);
+        let userID = req.params.id;
+        console.log("this is the id ", userID);
         const edituser = await Student.findByIdAndUpdate(userID, req.body, { new: true });
-        res.json({ updatedUser : edituser , message : "user is updated" })
+        res.json({ updatedUser: edituser, message: "user is updated" })
     } catch (error) {
         console.log(error);
-        res.status(500).json({error : {message : "not updated"}})
+        res.status(500).json({ error: { message: "not updated" } })
     }
 })
 
