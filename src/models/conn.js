@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const db = `mongodb+srv://admin1:admin1@vinay.urjkkri.mongodb.net/?retryWrites=true&w=majority`;
+const db = `mongodb://127.0.0.1:27017/user`;
 
 
 const connectDB = async () => {

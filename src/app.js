@@ -4,7 +4,7 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const connectDB = require('./models/conn')
 
-const port = process.env.PORT || 3002
+const port = process.env.PORT || 8800
 connectDB();
 
 var salt = bcrypt.genSaltSync(10);
@@ -15,11 +15,11 @@ const Student = require('./models/studentmodel')
 
 app.use(express.json());
 // app.use(express.urlencoded());
-// app.use(cors())
+app.use(cors())
 app.get('/', async (req, res) => {
     try {
         console.log("get the  data");
-        res.status(200).send()
+        res.status(200).json({message : "Hi welcome to homepage"})
     } catch (err) {
         console.log(err);
         res.status.send(err)
@@ -49,8 +49,8 @@ app.post('/register', async (req, res) => {
             email: req.body.email,
             password: hash
         })
-        await registerStudent.save()
-        res.status(201).send();
+        let  createdStudent = await registerStudent.save()
+        res.status(201).json({user : createdStudent})
     } catch (error) {
         console.log(error)
         res.status(400).send(error)
